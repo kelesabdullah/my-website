@@ -23,22 +23,57 @@ const certs = [
         icon: <Cloud className="w-5 h-5 text-blue-400" />
     },
     {
-        name: "Microsoft Azure Administrator",
+        name: "Azure Administrator Associate",
         code: "AZ-104",
         issuer: "Microsoft",
         color: "border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.3)]",
         icon: <Lock className="w-5 h-5 text-cyan-400" />
     },
     {
-        name: "Huawei Certified ICT Associate",
-        code: "HCIA-Cloud",
+        name: "HCCDA – AI",
+        code: "Huawei-AI",
+        issuer: "Huawei",
+        color: "border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+        icon: <Cpu className="w-5 h-5 text-red-400" />
+    },
+    {
+        name: "HCCDA – Tech Essentials",
+        code: "Huawei-Tech",
         issuer: "Huawei",
         color: "border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
         icon: <BadgeCheck className="w-5 h-5 text-red-400" />
     },
     {
-        name: "Network Security Expert",
-        code: "NSE",
+        name: "HCCDA – Big Data",
+        code: "Huawei-BigData",
+        issuer: "Huawei",
+        color: "border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+        icon: <BadgeCheck className="w-5 h-5 text-red-400" />
+    },
+    {
+        name: "HCCDA – Cloud Native",
+        code: "Huawei-Cloud",
+        issuer: "Huawei",
+        color: "border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+        icon: <Cloud className="w-5 h-5 text-red-400" />
+    },
+    {
+        name: "HCCDP – Solution Architectures",
+        code: "Huawei-Arch",
+        issuer: "Huawei",
+        color: "border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+        icon: <Shield className="w-5 h-5 text-red-400" />
+    },
+    {
+        name: "Fortinet NSE 1",
+        code: "NSE-1",
+        issuer: "Fortinet",
+        color: "border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]",
+        icon: <Shield className="w-5 h-5 text-purple-400" />
+    },
+    {
+        name: "Fortinet NSE 2",
+        code: "NSE-2",
         issuer: "Fortinet",
         color: "border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]",
         icon: <Shield className="w-5 h-5 text-purple-400" />
@@ -92,7 +127,7 @@ export default function Skills({ progress = 0 }: SectionProps) {
                         <h3 className="text-2xl font-bold font-orbitron">Clearance Levels</h3>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 no-scrollbar">
                         {certs.map((cert, i) => {
                             const isVisible = progress > (0.3 + i * 0.1);
                             return (
