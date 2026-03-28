@@ -33,9 +33,9 @@ kubectl patch svc ingress-nginx-controller -n ingress-nginx -p '{"spec":{"type":
 
 # Kubernetes kaynaklarını deploy et
 echo "📋 Kubernetes kaynakları deploy ediliyor..."
-kubectl apply -f depl1.yaml
-kubectl apply -f svc1.yaml
-kubectl apply -f ingress1.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f ingress.yaml
 
 # Durum kontrolü
 echo ""

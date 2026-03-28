@@ -211,17 +211,6 @@ INGRESS_UPDATED=0
 
 # yq varsa kullan (daha güvenli)
 if command -v yq > /dev/null 2>&1; then
-    # TLS host ekle (ilk TLS entry'ye ekle)
-    # Önce mevcut TLS entry'ye eklemeyi dene
-    TLS_HOSTS_COUNT=$(yq eval '.spec.tls[0].hosts | length' "$INGRESS_YAML" 2>/dev/null || echo "0")
-    
-    if [ "$TLS_HOSTS_COUNT" -gt 0 ]; then
-        # İlk TLS entry'ye host ekle
-        yq eval ".spec.tls[0].hosts += [\"${DOMAIN}\"]" -i "$INGRESS_YAML" 2>/dev/null
-    else
-        # TLS entry yoksa yeni oluştur
-        yq eval ".spec.tls += [{\"hosts\": [\"${DOMAIN}\"], \"secretName\": \"letsencrypt-tls\"}]" -i "$INGRESS_YAML" 2>/dev/null
-    fi
     
     # Yeni rule ekle
     yq eval ".spec.rules += [{\"host\": \"${DOMAIN}\", \"http\": {\"paths\": [{\"path\": \"/\", \"pathType\": \"Prefix\", \"backend\": {\"service\": {\"name\": \"${WEBSITE_NAME}-service\", \"port\": {\"number\": 80}}}}]}}]" -i "$INGRESS_YAML" 2>/dev/null
@@ -254,20 +243,7 @@ try:
     with open(ingress_file, 'r') as f:
         data = yaml.safe_load(f)
     
-    # TLS host ekle
-    if 'spec' in data and 'tls' in data['spec'] and len(data['spec']['tls']) > 0:
-        if 'hosts' in data['spec']['tls'][0]:
-            if domain not in data['spec']['tls'][0]['hosts']:
-                data['spec']['tls'][0]['hosts'].append(domain)
-        else:
-            data['spec']['tls'][0]['hosts'] = [domain]
-    else:
-        # TLS entry yoksa oluştur
-        if 'spec' not in data:
-            data['spec'] = {}
-        if 'tls' not in data['spec']:
-            data['spec']['tls'] = []
-        data['spec']['tls'].append({"hosts": [domain], "secretName": "letsencrypt-tls"})
+
     
     # Yeni rule ekle
     if 'spec' not in data:
@@ -334,8 +310,7 @@ if [ "$INGRESS_UPDATED" != "1" ]; then
         echo "   💡 Ingress YAML dosyası: $INGRESS_YAML"
         echo ""
         echo "   Şu değişiklikleri yapın:"
-        echo "   1. spec.tls[0].hosts listesine '${DOMAIN}' ekleyin"
-        echo "   2. spec.rules listesine şu rule'u ekleyin:"
+        echo "   1. spec.rules listesine şu rule'u ekleyin:"
         echo ""
         cat <<EOF
    - host: ${DOMAIN}
